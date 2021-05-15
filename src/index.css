@@ -20,3 +20,12 @@ button {
   outline: none;
   cursor: pointer;
 }
+input {
+  outline: none;
+}
+.a_btn {
+  border-radius: 2px;
+  border: 1px solid;
+  background: #f0c14b;
+  border-color: #a88734 #9c7e31 #846a29;
+}
