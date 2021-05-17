@@ -23,7 +23,7 @@ function Product({ id, title, image, price, rating }) {
       <div className="product__info">
         <p>{title}</p>
         <p className="product__price">
-          <smal>$</smal> <strong>{price}</strong>
+          <small>$</small> <strong>{price}</strong>
         </p>
         <div className="product__rating">
           {/* არაის ვქმნით რატინგისგან რო იმდენჯერ დავარენდეროთ რა რიცხვსაც გადმოვცემთ */}

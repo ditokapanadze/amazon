@@ -42,9 +42,13 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+.header__optionLineTwo {
+  font-size: 14px;
+  font-weight: 700;
+}
 .header__optionLineOne {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 400;
 }
 .header__optionBasket {
   display: flex;
