@@ -8,6 +8,13 @@ import Login from "./Login";
 import { auth } from "./firebase";
 import { useStateValue } from "./StateProvider";
 import Paymant from "./Paymant";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+const promise = loadStripe(
+  "pk_live_51IsBIOCsHPQK8foPF6oNCvCnJflDJyLrutUpDFsCoB9t9wC7baBGSr3h22ff34uUAA217A8c269qQXnBwqWlBypD00Twwsne8C"
+);
+
 function App() {
   const [{}, dispatch] = useStateValue();
   useEffect(() => {
@@ -39,7 +46,9 @@ function App() {
           </Route>
           <Route path="/paymant">
             <Header />
-            <Paymant />
+            <Elements stripe={promise}>
+              <Paymant />
+            </Elements>
           </Route>
           <Route path="/">
             <Header />

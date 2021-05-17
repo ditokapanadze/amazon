@@ -24,3 +24,8 @@
 .paymant__items {
   flex: 0.8;
 }
+.paymant__adress,
+.paymant__items,
+.paymant__details {
+  flex: 0.8;
+}

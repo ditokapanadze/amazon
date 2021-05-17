@@ -1,3 +1,9 @@
+import {
+  useElements,
+  useStripe,
+  cardElement,
+  CardElement,
+} from "@stripe/react-stripe-js";
 import React from "react";
 import { Link } from "react-router-dom";
 import CheckoutProduct from "./CheckoutProduct";
@@ -6,6 +12,12 @@ import { useStateValue } from "./StateProvider";
 
 function Paymant() {
   const [{ basket, user }, dispatch] = useStateValue();
+  const stripe = useStripe();
+  const elements = useElements();
+  const [error, setError] = useState(null);
+  const [disabled, setDisabled] = useState(true);
+  const handleSubmit = (e) => {};
+  const handleChange = (e) => {};
   return (
     <div className="paymant">
       <div className="paymant__container">
@@ -43,7 +55,11 @@ function Paymant() {
           <div className="paymant__title">
             <h3>Paymant Method</h3>
           </div>
-          <div className="paymant__details"></div>
+          <div className="paymant__details">
+            <from onSubmit={handleSubmit}>
+              <CardElement onChange={handleChange} />
+            </from>
+          </div>
         </div>
       </div>
     </div>
