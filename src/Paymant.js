@@ -17,21 +17,29 @@ function Paymant() {
   const [succeeded, setSucceeded] = useState(false);
   const [processing, setProcessing] = useState("");
   let history = useHistory();
-  const [clientSecret, setClientSecret] = useState(true);
-
+  const [clientSecret, setClientSecret] = useState("");
+  console.log(user?.uid);
   const handleSubmit = async (e) => {
     console.log(":test");
     e.preventDefault();
     setProcessing(true);
+
     const payload = await stripe
       .confirmCardPayment(clientSecret, {
-        paymant_method: {
+        payment_method: {
           card: elements.getElement(CardElement),
         },
       })
       .then(({ paymentIntent }) => {
+        console.log("test");
+
+        console.log("test");
+        console.log("test");
+        console.log("test");
+        console.log("test");
+        console.log("test");
         db.collection("user")
-          .doc(user?.id)
+          .doc(user?.uid)
           .collection("orders")
           .doc(paymentIntent.id)
           .set({
@@ -42,7 +50,7 @@ function Paymant() {
         setSucceeded(true);
         setError(null);
         setProcessing(false);
-        history.replaceState("/orders");
+        history.replace("/orders");
         dispatch({
           type: "EMPTY_BASKET",
           basket: [],
@@ -124,7 +132,9 @@ function Paymant() {
                   thousandSeparator={true}
                   prefix={"$"}
                 />
-                <button disabled={processing || disabled || succeeded}>
+                <button
+                // disabled={processing || disabled || succeeded}
+                >
                   <span>{processing ? <p>Processing</p> : "Buy now"}</span>
                 </button>
               </div>
