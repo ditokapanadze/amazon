@@ -7,7 +7,7 @@ import "./Paymant.css";
 import { useStateValue } from "./StateProvider";
 import { getBasketTotal } from "./reducer";
 import axios from "./axios";
-
+import { db } from "./firebase";
 function Paymant() {
   const [{ basket, user }, dispatch] = useStateValue();
   const stripe = useStripe();
@@ -18,7 +18,9 @@ function Paymant() {
   const [processing, setProcessing] = useState("");
   let history = useHistory();
   const [clientSecret, setClientSecret] = useState(true);
+
   const handleSubmit = async (e) => {
+    console.log(":test");
     e.preventDefault();
     setProcessing(true);
     const payload = await stripe
@@ -27,14 +29,28 @@ function Paymant() {
           card: elements.getElement(CardElement),
         },
       })
-      .then(({ paymentIntenr }) => {
-        // paymantInten = paymant confirmation
+      .then(({ paymentIntent }) => {
+        db.collection("user")
+          .doc(user?.id)
+          .collection("orders")
+          .doc(paymentIntent.id)
+          .set({
+            basket: basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created,
+          });
         setSucceeded(true);
         setError(null);
         setProcessing(false);
         history.replaceState("/orders");
-      });
+        dispatch({
+          type: "EMPTY_BASKET",
+          basket: [],
+        });
+      })
+      .catch((error) => console.log(error));
   };
+  console.log(clientSecret);
   const handleChange = (e) => {
     setDisabled(e.empty);
     setError(e.error ? e.error.message : "");
@@ -45,14 +61,16 @@ function Paymant() {
     const getCliesntSecret = async () => {
       const response = await axios({
         method: "post",
-        // ცენტებში ანგარიშობს და ამიტო ვამრავლებ 100ზე
-        url: `payments/create?total=${getBasketTotal(basket) * 100}`,
+        // ცენტებში ანგარიშობს და მაგიტო ვამრაველბ ასზე
+        url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
       });
       setClientSecret(response.data.clientSecret);
+      console.log(response);
     };
     getCliesntSecret();
+    console.log("yy");
   }, [basket]);
-
+  console.log(clientSecret);
   return (
     <div className="paymant">
       <div className="paymant__container">
@@ -91,7 +109,7 @@ function Paymant() {
             <h3>Paymant Method</h3>
           </div>
           <div className="paymant__details">
-            <from onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <CardElement onChange={handleChange} />
               <div className="paymant__priceContainer">
                 <CurrencyFormat
@@ -111,7 +129,7 @@ function Paymant() {
                 </button>
               </div>
               {error && <div>{error}</div>}
-            </from>
+            </form>
           </div>
         </div>
       </div>

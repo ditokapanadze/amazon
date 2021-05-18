@@ -9,8 +9,6 @@ export const getBasketTotal = (basket) => {
 };
 
 const reducer = (state, action) => {
-  console.log(state);
-  console.log(action.user);
   switch (action.type) {
     case "ADD_TO_BASKET":
       return {
@@ -18,7 +16,6 @@ const reducer = (state, action) => {
         basket: [...state.basket, action.item],
       };
     case "REMOVE_FROM_BASKET":
-      console.log("test");
       // ორჯერ თუა დამატებული ერთი და იგივე პროდუქტი, ერთი უნდა წაშალოს, ამიტომ ფილტრის მაგივრად ინდექსი უნდა ვიპვოთ და პირველი წავშალოთ მარტო
       const index = state.basket.findIndex(
         (basketItem) => basketItem.id === action.id
@@ -40,6 +37,12 @@ const reducer = (state, action) => {
         ...state,
         user: action.user,
       };
+    case "EMPTY_BASKET":
+      return {
+        ...state,
+        basket: [],
+      };
+
     default:
       return state;
   }
