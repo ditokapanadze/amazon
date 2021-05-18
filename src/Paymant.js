@@ -1,14 +1,12 @@
-import {
-  useElements,
-  useStripe,
-  cardElement,
-  CardElement,
-} from "@stripe/react-stripe-js";
-import React from "react";
-import { Link } from "react-router-dom";
+import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
+import React, { useState, useEffect } from "react";
+import CurrencyFormat from "react-currency-format";
+import { Link, useHistory } from "react-router-dom";
 import CheckoutProduct from "./CheckoutProduct";
 import "./Paymant.css";
 import { useStateValue } from "./StateProvider";
+import { getBasketTotal } from "./reducer";
+import axios from "./axios";
 
 function Paymant() {
   const [{ basket, user }, dispatch] = useStateValue();
@@ -16,8 +14,45 @@ function Paymant() {
   const elements = useElements();
   const [error, setError] = useState(null);
   const [disabled, setDisabled] = useState(true);
-  const handleSubmit = (e) => {};
-  const handleChange = (e) => {};
+  const [succeeded, setSucceeded] = useState(false);
+  const [processing, setProcessing] = useState("");
+  let history = useHistory();
+  const [clientSecret, setClientSecret] = useState(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setProcessing(true);
+    const payload = await stripe
+      .confirmCardPayment(clientSecret, {
+        paymant_method: {
+          card: elements.getElement(CardElement),
+        },
+      })
+      .then(({ paymentIntenr }) => {
+        // paymantInten = paymant confirmation
+        setSucceeded(true);
+        setError(null);
+        setProcessing(false);
+        history.replaceState("/orders");
+      });
+  };
+  const handleChange = (e) => {
+    setDisabled(e.empty);
+    setError(e.error ? e.error.message : "");
+    console.log(error);
+  };
+
+  useEffect(() => {
+    const getCliesntSecret = async () => {
+      const response = await axios({
+        method: "post",
+        // ცენტებში ანგარიშობს და ამიტო ვამრავლებ 100ზე
+        url: `payments/create?total=${getBasketTotal(basket) * 100}`,
+      });
+      setClientSecret(response.data.clientSecret);
+    };
+    getCliesntSecret();
+  }, [basket]);
+
   return (
     <div className="paymant">
       <div className="paymant__container">
@@ -58,6 +93,24 @@ function Paymant() {
           <div className="paymant__details">
             <from onSubmit={handleSubmit}>
               <CardElement onChange={handleChange} />
+              <div className="paymant__priceContainer">
+                <CurrencyFormat
+                  renderText={(value) => (
+                    <>
+                      <h3>Order Total: {value}</h3>
+                    </>
+                  )}
+                  decimalScale={2}
+                  value={getBasketTotal(basket)}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"$"}
+                />
+                <button disabled={processing || disabled || succeeded}>
+                  <span>{processing ? <p>Processing</p> : "Buy now"}</span>
+                </button>
+              </div>
+              {error && <div>{error}</div>}
             </from>
           </div>
         </div>

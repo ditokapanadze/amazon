@@ -29,3 +29,7 @@
 .paymant__details {
   flex: 0.8;
 }
+
+.paymant__priceContainer h3 {
+  margin: 5px 0 5px 0;
+}
