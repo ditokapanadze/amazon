@@ -2,7 +2,7 @@ export const initialState = {
   basket: [],
   user: null,
 };
-
+let test = [];
 // ბასკეტში დამატებული პროდუქტის მთლიანი ფასი
 export const getBasketTotal = (basket) => {
   return basket?.reduce((amount, item) => item.price + amount, 0);

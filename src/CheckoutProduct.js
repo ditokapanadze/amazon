@@ -1,7 +1,10 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import "./CheckoutProduct.css";
 import { useStateValue } from "./StateProvider";
-function CheckoutProduct({ id, image, title, rating, price }) {
+import { v4 as uuidv4 } from "uuid";
+import FlipMove from "react-flip-move";
+
+function CheckoutProduct({ id, image, title, rating, price, hideButton }, ref) {
   const [{ basket }, dispatch] = useStateValue();
   const remove = () => {
     dispatch({
@@ -11,7 +14,7 @@ function CheckoutProduct({ id, image, title, rating, price }) {
   };
 
   return (
-    <div className="checkoutProduct">
+    <div ref={ref} className="checkoutProduct">
       <img className="checkoutProduct__image" src={image} />
       <div className="checkoutProduct__info">
         <p className="checkoutProduct__title">{title}</p>
@@ -23,13 +26,14 @@ function CheckoutProduct({ id, image, title, rating, price }) {
           {Array(rating)
             .fill()
             .map((_, i) => (
-              <p>⭐</p>
+              <p key={i}>⭐</p>
             ))}
         </div>
-        <button onClick={remove}>Remove from basket</button>
+        {hideButton ? "" : <button onClick={remove}>Remove from basket</button>}
       </div>
     </div>
   );
 }
 
-export default CheckoutProduct;
+const testRef = React.forwardRef(CheckoutProduct);
+export default testRef;

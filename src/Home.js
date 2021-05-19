@@ -22,7 +22,7 @@ function Home() {
             title="Kenwood kMix Stand Mixer for Baking, Stylish Kittchen Mixer with K-beater, Dough Hook and Whisk, 5 Litre Glass Bowl"
             price={239.99}
             rating={3}
-            image="https://images-na.ssl-images-amazon.com/images/I/51Zymoq7UnL._AC_SY400_.jpg"
+            image="https://m.media-amazon.com/images/I/61etD4-IrPL._AC_SL1200_.jpg"
           />
         </div>
         <div className="home__row">
@@ -50,6 +50,7 @@ function Home() {
         </div>
         <div className="home__row">
           <Product
+            isLarge
             id="908299322"
             title="Samsung LC$9RG90SSUXEN 59' Curved"
             price={1098.99}

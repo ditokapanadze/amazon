@@ -38,7 +38,7 @@ function Paymant() {
         console.log("test");
         console.log("test");
         console.log("test");
-        db.collection("user")
+        db.collection("users")
           .doc(user?.uid)
           .collection("orders")
           .doc(paymentIntent.id)
@@ -123,7 +123,7 @@ function Paymant() {
                 <CurrencyFormat
                   renderText={(value) => (
                     <>
-                      <h3>Order Total: {value}</h3>
+                      <h4>Order Total: {value}</h4>
                     </>
                   )}
                   decimalScale={2}
@@ -133,7 +133,8 @@ function Paymant() {
                   prefix={"$"}
                 />
                 <button
-                // disabled={processing || disabled || succeeded}
+                  className="a_btn"
+                  // disabled={processing || disabled || succeeded}
                 >
                   <span>{processing ? <p>Processing</p> : "Buy now"}</span>
                 </button>

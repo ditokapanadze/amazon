@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "./Product.css";
 import { useStateValue } from "./StateProvider";
 
-function Product({ id, title, image, price, rating }) {
+function Product({ id, title, image, price, rating, isLarge }) {
   const [{ basket }, dispatch] = useStateValue();
 
   const addTobasket = () => {
@@ -30,11 +30,14 @@ function Product({ id, title, image, price, rating }) {
           {Array(rating)
             .fill()
             .map((_, i) => (
-              <p>⭐</p>
+              <p key={i}>⭐</p>
             ))}
         </div>
       </div>
-      <img src={image} />
+      <img
+        // style={isLarge ? { "max-width": 400 } : { "max-width": 200 }}
+        src={image}
+      />
       <button onClick={addTobasket}>Add to Basket</button>
     </div>
   );

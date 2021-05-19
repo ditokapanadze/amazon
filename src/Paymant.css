@@ -33,3 +33,17 @@
 .paymant__priceContainer h3 {
   margin: 5px 0 5px 0;
 }
+.paymant__details form {
+  max-width: 400px;
+}
+.paymant__details h4 {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.paymant__details form div button {
+  width: 100%;
+  height: 30px;
+  font-weight: bolder;
+  color: #111;
+}
