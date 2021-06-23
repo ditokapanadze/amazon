@@ -31,7 +31,17 @@ function App() {
         });
       }
     });
+    
   }, []);
+  
+  useEffect(() =>{
+    dispatch({
+      type: "GET_CART"
+    })
+  },[dispatch])
+
+
+  // }, [dispatch])
   return (
     <Router>
       <div className="app">

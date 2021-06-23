@@ -5,8 +5,11 @@ import { useStateValue } from "./StateProvider";
 import Subtotal from "./Subtotal";
 import FlipMove from "react-flip-move";
 import { v4 as uuidv4 } from "uuid";
+
+console.log("test");
 function Checkout() {
   const [{ basket, user }, dipsatch] = useStateValue();
+console.log(basket);
   return (
     <div className="checkout">
       <div className="checkout__left">
@@ -18,7 +21,7 @@ function Checkout() {
           <h3>Hello, {user?.email}</h3>
           <h2 className="checkout__title">your shopping Basket</h2>
           <FlipMove>
-            {basket.map((item) => (
+            {basket?.map((item) => (
               <CheckoutProduct
                 key={uuidv4()}
                 image={item.image}

@@ -1,8 +1,10 @@
+import { stringify } from "uuid";
+
 export const initialState = {
   basket: [],
   user: null,
 };
-let test = [];
+
 // ბასკეტში დამატებული პროდუქტის მთლიანი ფასი
 export const getBasketTotal = (basket) => {
   return basket?.reduce((amount, item) => item.price + amount, 0);
@@ -10,10 +12,17 @@ export const getBasketTotal = (basket) => {
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "GET_CART":
+      return{
+        ...state, basket: JSON.parse(localStorage.getItem("cart"))
+      }
     case "ADD_TO_BASKET":
-      return {
+      console.log("test");
+      console.log(action.item);
+     localStorage.setItem("cart", JSON.stringify(action.item))
+     return {
         ...state,
-        basket: [...state.basket, action.item],
+        basket: action.item,
       };
     case "REMOVE_FROM_BASKET":
       // ორჯერ თუა დამატებული ერთი და იგივე პროდუქტი, ერთი უნდა წაშალოს, ამიტომ ფილტრის მაგივრად ინდექსი უნდა ვიპვოთ და პირველი წავშალოთ მარტო
@@ -28,9 +37,10 @@ const reducer = (state, action) => {
           `cant remove prodict (id ${action.id}) as its not in basket`
         );
       }
+      localStorage.setItem("cart", JSON.stringify(newBasket))
       return {
         ...state,
-        basket: newBasket,
+        basket: newBasket ,
       };
     case "SET_USER":
       return {
